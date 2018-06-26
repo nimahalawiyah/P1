@@ -2,12 +2,12 @@ const express=require('express');
 const cors =require('cors');
 const mysql=require('mysql');
 const app = express();
-const selectall="select * from matkul";
+const selectall="select * from table";
 const con= mysql.createConnection({
     host:'localhost',
-    user:'root',
-    password:'',
-    database:'crudmern'
+    user:'username',
+    password:'password',
+    database:'database_name'
 });
 con.connect(err=>{
     if(err){
@@ -16,9 +16,9 @@ con.connect(err=>{
 });
 app.use(cors());
 app.get('/',(req, res)=>{
-    res.send('go to /matakuliah to see data')
+    res.send('go to /data to see data')
 });
-app.get('/matakuliah',(req, res)=>{
+app.get('/data',(req, res)=>{
 con.query(selectall,(err, result)=>{
     if(err){
         return res.send(err)
@@ -29,41 +29,41 @@ con.query(selectall,(err, result)=>{
     }
 });
 });
-app.get('/matakuliah/add',(req, res)=>{
-            const {kd_matkul, matkul, sks, prodi, status, semester}=req.query;
+app.get('/data/add',(req, res)=>{
+            const {field1, field2, field3, field4, field5, field6}=req.query;
             console.log(req.query);
-            const insertmhs="insert into matkul set ?";
-            con.query(insertmhs,{kd_matkul, matkul,sks, prodi, status, semester},(err, results)=> {
+            const insertdata="insert into table set ?";
+            con.query(insertdata,{field1, field2,field3, field4, field5, field6},(err, results)=> {
                 if(err){
                     return res.send(err)
                 }else{
-                    return res.send('matakuliah ditambahkan')
+                    return res.send('Data ditambahkan')
                 }
             }); 
 });
-app.get('/matakuliah/edit',(req, res)=>{   
-    const id=req.query.id;
-    const {kd_matkul, matkul, sks, prodi, status, semester}=req.query;
-    const updatemhs="UPDATE matkul set ? WHERE id=?";
-    con.query(updatemhs,[{kd_matkul, matkul,sks, prodi, status, semester}, id],(err, results)=> {
+app.get('/data/edit',(req, res)=>{   
+    const field=req.query.field;
+    const {field1, field2, field3, field4, field5, field6}=req.query;
+    const updatedatafield="UPDATE table set ? WHERE field=?";
+    con.query(updatedatafield,[{field1, field2, field3, field4, field5, field6}, field],(err, results)=> {
         if(err){
             return res.send(err)
         }else{
-            return res.send('matakuliah telah diubah')
+            return res.send('Data telah diubah')
         }
     }); 
     });
-app.get('/matakuliah/delete',(req, res)=>{
-    const id=req.query.id;
-    const deletemhs="DELETE FROM matkul WHERE id = ?";
-    con.query(deletemhs,[id],(err, results)=> {
+app.get('/data/delete',(req, res)=>{
+    const field=req.query.field;
+    const deletedata="DELETE FROM table WHERE field = ?";
+    con.query(deletedata,[field],(err, results)=> {
         if(err){
             return res.send(err)
         }else{
-            return res.send('matakuliah dihapus')
+            return res.send('Data dihapus')
         }
     }); 
     });
 app.listen(4000,()=>{
-    console.log('Matakuliah server listening on port 4000')
+    console.log('Data server listening on port 4000')
 });
