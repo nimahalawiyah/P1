@@ -5,137 +5,118 @@ class App extends Component {
   constructor(){
     super()
   this.state={
-    matakuliah:[],
+    dataapi:[],
     title:"RESTful API MERN",
     act:0,
-      index:'',
-      showupdate:false,
-      showsubmit:true
-  
+    index:''
 }
   }
   componentDidMount(){
-    this.getMatakuliah();
+    this.getData();
   }
-  getMatakuliah= _ =>{
-    fetch('http://localhost:4000/matakuliah')
+  getData= _ =>{
+    fetch('api/data')
     .then(response=>response.json())
-    .then(response=>this.setState({matakuliah:response.data}))
+    .then(response=>this.setState({dataapi:response.data}))
     .catch(err=>console.error(err))
   }
-  insertmatakuliah=(e)=>{
+  insertdata=(e)=>{
     e.preventDefault();
-    let kd_matkul=this.refs.kd_matkul.value;
-let matkul=this.refs.matkul.value;
-let sks=this.refs.sks.value;
-let prodi=this.refs.prodi.value;
-let semester=this.refs.semester.value;
-    fetch('http://localhost:4000/matakuliah/add?kd_matkul='+kd_matkul+'&matkul='+matkul+'&sks='+sks+'&prodi='+prodi+'&status=1&semester='+semester+'')
-    .then(this.getMatakuliah)
+let field1=this.refs.field1.value;
+let field2=this.refs.field2.value;
+let field3=this.refs.field3.value;
+let field4=this.refs.field4.value;
+let field5=this.refs.field5.value;
+    fetch('http://localhost:4000/data/add?field1='+field1+'&field2='+field2+'&field3='+field3+'&field4='+field4+'&field6=1&field5='+field5+'')
+    .then(this.getData)
     .then(this.refs.myform.reset())
-    .then(this.refs.kd_matkul.focus())
+    .then(this.refs.field1.focus())
     .catch(err=>console.error(err))
   }
-  uploadfile=(e)=>{
-    e.preventDefault();
-let fileupload=this.refs.fileupload.value;
-    fetch('http://localhost:4000/matakuliah/file?fileupload='+fileupload+'')
-    .then(this.refs.myform.reset())
-    .catch(err=>console.error(err))
-  }
-  updatematakuliah=(e)=>{
-    e.preventDefault();
-    let kd_matkul=this.refs.ekd_matkul.value;
-let matkul=this.refs.ematkul.value;
-let sks=this.refs.esks.value;
-let prodi=this.refs.eprodi.value;
-let semester=this.refs.esemester.value;
-let id=this.refs.eidmatkul.value;
-    fetch('http://localhost:4000/matakuliah/edit?kd_matkul='+kd_matkul+'&matkul='+matkul+'&sks='+sks+'&prodi='+prodi+'&status=1&semester='+semester+'&id='+id+'')
-    .then(this.getMatakuliah)
-    // .then(this.refs.emyform.reset())
-    .catch(err=>console.error(err))
-    this.setState({
-      showupdate:false,
-      showsubmit:true
-    })
-    
+  updatedata=(e)=>{
+    e.preventDefault();    
+let field=this.refs.efield.value;
+let field1=this.refs.efield1.value;
+let field2=this.refs.efield2.value;
+let field3=this.refs.efield3.value;
+let field4=this.refs.efield4.value;
+let field5=this.refs.efield5.value;
+    fetch('api/data/edit?field1='+field1+'&field2='+field2+'&field3='+field3+'&field4='+field4+'&field6=1&field5='+field5+'&field='+field+'')
+    .then(this.getData)
+    .catch(err=>console.error(err))   
   }
   fEdit=(i)=>{
-    let data=this.state.matakuliah[i-1];
-    this.refs.ekd_matkul.value=data.kd_matkul;
-    this.refs.ematkul.value=data.matkul;
-    this.refs.esks.value=data.sks;
-    this.refs.eprodi.value=data.prodi;
-    this.refs.esemester.value=data.semester;
-    this.refs.eidmatkul.value=data.id;
+    let data=this.state.dataapi[i];
+    this.refs.efield1.value=data.field1;
+    this.refs.efield2.value=data.field2;
+    this.refs.efield3.value=data.field3;
+    this.refs.efiel4.value=data.field4;
+    this.refs.efield5.value=data.field5;
+    this.refs.field.value=data.field;
     this.setState({
-      act:1,
-      index:i,
-      showsubmit:false,
-      showupdate:true
+      index:i
     });
   }
   fRemove=(i)=>{
-    fetch('http://localhost:4000/matakuliah/delete?id='+i+'')
-    .then(this.getMatakuliah)
+    fetch('api/data/delete?field='+i+'')
+    .then(this.getData)
     .catch(err=>console.error(err))
   }
-  renderMatakuliah=({id,matkul})=><div key={id}>{matkul}</div>
+  renderData=({key,value})=><div key={key}>{value}</div>
   render() {
-    const{matakuliah}=this.state;
+    const{dataapi}=this.state;
     return (
       <div className="container">
        <h2>{this.state.title}</h2>
       <form ref="myform" encType="multipart/form-data">
-        <input type="hidden" ref="idmatkul" className="formfield"/>
+        <input type="hidden" ref="field" className="formfield"/>
             <div className="form-group">
-              <label>Kode Matkul:</label>
-              <input type="text" ref="kd_matkul" placeholder="Kode Mata Kuliah" className="form-control" id="kd_matkul" name="kd_matkul"/>
+              <label>Field 1:</label>
+              <input type="text" ref="field1" placeholder="Isi Field ini" className="form-control"/>
             </div>
             <div className="form-group">
-              <label>Mata Kuliah:</label>
-              <input type="text" ref="matkul" placeholder="Mata Kuliah" className="form-control" id="matkul" name="matkul"/>
+              <label>Field 2:</label>
+              <input type="text" ref="field2" placeholder="Isi Field ini" className="form-control"/>
             </div>
             <div className="form-group">
-              <label>SKS:</label>
-              <input type="text" ref="sks" placeholder="SKS" className="form-control" id="sks" name="sks"/>
+              <label>Field 3:</label>
+              <input type="text" ref="field3" placeholder="Isi Field ini" className="form-control"/>
             </div>
             <div className="form-group">
-              <label>Prodi:</label>
-              <input type="text" ref="prodi" placeholder="Program Studi" className="form-control" id="prodi" name="prodi"/>
+              <label>Field 4:</label>
+              <input type="text" ref="field4" placeholder="Isi Field ini" className="form-control"/>
             </div>
             <div className="form-group">
-              <label>Semester:</label>
-              <input type="text" ref="semester" placeholder="Semester" className="form-control" id="semester" name="semester"/>
+              <label>Field 5:</label>
+              <input type="text" ref="field5" placeholder="Isi Field ini" className="form-control"/>
             </div>
-        <button onClick={this.insertmatakuliah} className="btn btn-danger">Submit</button>
+        <button onClick={this.insertdata} className="btn btn-danger">Submit</button>
         </form><br/>
         <div className="table-responsive">
       <table className="table table-dark table-striped">
       <thead>
       <tr>
         <td>No</td>
-        <td>Kode</td>
-        <td>Matkul</td>
-        <td>SKS</td>
-        <td>Prodi</td>
-        <td>Semester</td>
+        <td>Field 1</td>
+        <td>Field 2</td>
+        <td>Field 3</td>
+        <td>Field 4</td>
+        <td>Field 5</td>
         <td>Aksi</td>
         </tr>
         </thead>
         <tbody>
-      {matakuliah.map((matkul, id)=>
-          <tr key={id}>
-          <td>{id+1}</td>
-          <td>{matkul.kd_matkul}</td>
-          <td>{matkul.matkul}</td>
-          <td>{matkul.sks}</td>
-          <td>{matkul.prodi}</td>
-          <td>{matkul.semester}</td>
+      {dataapi.map((value, key)=>
+          <tr key={key}>
+          <td>{key+1}</td>
+          <td>{value.field1}</td>
+          <td>{value.field2}</td>
+          <td>{value.field3}</td>
+          <td>{value.field4}</td>
+          <td>{value.field5}</td>
           <td>
-          <button onClick={()=>this.fRemove(matkul.id)} className="btn btn-warning">Remove</button>
-          <button data-toggle="modal" data-target="#myModal" onClick={()=>this.fEdit(matkul.id)} className="btn btn-primary">Edit</button></td>
+          <button onClick={()=>this.fRemove(value.field)} className="btn btn-warning">Remove</button>
+          <button data-toggle="modal" data-target="#myModal" onClick={()=>this.fEdit(key)} className="btn btn-primary">Edit</button></td>
           </tr>
           )}
           </tbody>
@@ -150,28 +131,28 @@ let id=this.refs.eidmatkul.value;
         </div>
         <div className="modal-body">
         <form ref="emyform">
-        <input type="hidden" ref="eidmatkul" className="formfield"/>
+        <input type="hidden" ref="efield" className="formfield"/>
         <div className="form-group">
-              <label>Kode Matkul:</label>
-              <input type="text" ref="ekd_matkul" placeholder="Kode Mata Kuliah" className="form-control" id="ekd_matkul" name="ekd_matkul"/>
+              <label>Field 1:</label>
+              <input type="text" ref="efield1" className="form-control"/>
             </div>
             <div className="form-group">
-              <label>Mata Kuliah:</label>
-              <input type="text" ref="ematkul" placeholder="Mata Kuliah" className="form-control" id="ematkul" name="ematkul"/>
+              <label>Field 2:</label>
+              <input type="text" ref="efield2" className="form-control"/>
             </div>
             <div className="form-group">
-              <label>SKS:</label>
-              <input type="text" ref="esks" placeholder="SKS" className="form-control" id="esks" name="esks"/>
+              <label>Field 3:</label>
+              <input type="text" ref="efield3" className="form-control"/>
             </div>
             <div className="form-group">
-              <label>Prodi:</label>
-              <input type="text" ref="eprodi" placeholder="Program Studi" className="form-control" id="eprodi" name="eprodi"/>
+              <label>Field 4:</label>
+              <input type="text" ref="efield4" className="form-control"/>
             </div>
             <div className="form-group">
-              <label>Semester:</label>
-              <input type="text" ref="esemester" placeholder="Semester" className="form-control" id="esemester" name="esemester"/>
+              <label>Field 5:</label>
+              <input type="text" ref="efield5" className="form-control"/>
             </div>
-          <button onClick={this.updatematakuliah} className="btn btn-danger">Update</button>
+          <button onClick={this.updatedata} className="btn btn-danger">Update</button>
         </form>
         </div>
         <div className="modal-footer">
