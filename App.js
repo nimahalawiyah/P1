@@ -7,7 +7,6 @@ class App extends Component {
   this.state={
     dataapi:[],
     title:"RESTful API MERN",
-    act:0,
     index:''
 }
   }
@@ -15,7 +14,7 @@ class App extends Component {
     this.getData();
   }
   getData= _ =>{
-    fetch('api/data')
+    fetch('/data')
     .then(response=>response.json())
     .then(response=>this.setState({dataapi:response.data}))
     .catch(err=>console.error(err))
@@ -27,7 +26,7 @@ let field2=this.refs.field2.value;
 let field3=this.refs.field3.value;
 let field4=this.refs.field4.value;
 let field5=this.refs.field5.value;
-    fetch('http://localhost:4000/data/add?field1='+field1+'&field2='+field2+'&field3='+field3+'&field4='+field4+'&field6=1&field5='+field5+'')
+    fetch('/data/add?field1='+field1+'&field2='+field2+'&field3='+field3+'&field4='+field4+'&field6=1&field5='+field5+'')
     .then(this.getData)
     .then(this.refs.myform.reset())
     .then(this.refs.field1.focus())
@@ -41,7 +40,7 @@ let field2=this.refs.efield2.value;
 let field3=this.refs.efield3.value;
 let field4=this.refs.efield4.value;
 let field5=this.refs.efield5.value;
-    fetch('api/data/edit?field1='+field1+'&field2='+field2+'&field3='+field3+'&field4='+field4+'&field6=1&field5='+field5+'&field='+field+'')
+    fetch('/data/edit?field1='+field1+'&field2='+field2+'&field3='+field3+'&field4='+field4+'&field6=1&field5='+field5+'&field='+field+'')
     .then(this.getData)
     .catch(err=>console.error(err))   
   }
@@ -58,7 +57,7 @@ let field5=this.refs.efield5.value;
     });
   }
   fRemove=(i)=>{
-    fetch('api/data/delete?field='+i+'')
+    fetch('/data/delete?field='+i+'')
     .then(this.getData)
     .catch(err=>console.error(err))
   }
