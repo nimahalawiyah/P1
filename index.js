@@ -64,6 +64,6 @@ app.get('/data/delete',(req, res)=>{
         }
     }); 
     });
-app.listen(4000,()=>{
+app.listen(PORT,()=>{
     console.log('Data server listening on port 4000')
 });
